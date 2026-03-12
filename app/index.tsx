@@ -93,9 +93,9 @@ export default function App() {
 
         {/* 2. Logo da Empresa (Placeholder) */}
         <Image
-          source={require('../assets/images/logo.png')} // Certifique-se de ter um logo.png na pasta assets
+          source={require('../assets/images/logo.png')} 
           style={styles.logo}
-          resizeMode="contain" // Isso faz a imagem caber dentro do espaço sem cortar
+          resizeMode="contain" // pra imagem caber sem cortar
         />
 
         {/* 3. Nome e Slogan */}
@@ -123,11 +123,11 @@ export default function App() {
   );
 }
 
-// 4. Desafio de Autonomia: Criando o StyleSheet e definindo a identidade visual
+// 4. Desafio de Autonomia
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // Laranja para Beleza (Representando energia e rejuvenescimento)
+    //cor azul da ong aqui embaixo
     backgroundColor: '#74c4feff',
   },
   content: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
-    borderRadius: 75, // Deixa o logo circular
+    borderRadius: 75, // deixa a borda redondinha
     marginBottom: 20,
     borderWidth: 3,
     borderColor: '#FFFFFF',
