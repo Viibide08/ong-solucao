@@ -1,26 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, ActivityIndicator, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { FlatList, ActivityIndicator, StyleSheet, View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
+import { Accelerometer } from 'expo-sensors'; // Importa o Acelerômetro
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import ONGCard from '@/components/ONGCard';
+
+// 1. IMPORTA A LISTA COMPARTILHADA DA STORE
+import { listaCausas } from '@/constants/CausasStore';
 
 export default function ExploreScreen() {
   const [loading, setLoading] = useState(true);
   const [ongs, setOngs] = useState<any[]>([]);
   const [selecionada, setSelecionada] = useState<any>(null); // Estado para a ONG clicada
 
+  // --- REQUISITO 2: SHAKE TO REFRESH ---
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+
+    Accelerometer.setUpdateInterval(100);
+
+    const subscription = Accelerometer.addListener(({ x, y, z }) => {
+      const totalForce = Math.abs(x) + Math.abs(y) + Math.abs(z);
+
+      // Limiar de força para detectar o chacoalhão
+      if (totalForce > 3.5) {
+        Alert.alert(
+          "🔄 Sincronizando...",
+          "Buscando novas doações e causas sociais no servidor!"
+        );
+      }
+    });
+
+    return () => subscription.remove();
+  }, []);
+
+  // --- CARREGAMENTO DAS ONGS DA STORE COMPARTILHADA ---
   useEffect(() => {
     const timer = setTimeout(() => {
-      const dadosSimulados = [
-        { id: '1', nome: 'Patinhas Livres', causa: 'Proteção Animal', imagem: 'https://picsum.photos/200' },
-        { id: '2', nome: 'Verde Infinito', causa: 'Meio Ambiente', imagem: 'https://picsum.photos/201' },
-        { id: '3', nome: 'Educa Mais', causa: 'Educação', imagem: 'https://picsum.photos/202' },
-      ];
-      setOngs(dadosSimulados);
+      // 2. AQUI: Em vez dos dados simulados fixos, usamos a listaCausas
+      setOngs([...listaCausas]);
       setLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [ongs]); // Atualiza se a lista mudar
 
   if (loading) {
     return (

@@ -1,18 +1,18 @@
 import React, { useState } from 'react'; 
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Alert } from 'react-native'; 
-import { useRouter } from 'expo-router'; // IMPORTAÇÃO DO ROTEADOR
+import { useRouter } from 'expo-router'; 
 
-export default function App() {
-  const router = useRouter(); // INICIALIZAÇÃO DO ROTEADOR
+export default function IndexScreen() {
+  const router = useRouter(); 
   const [email, setEmail] = useState(''); 
   const [senha, setSenha] = useState(''); 
 
   const handleLogin = () => {
-    // Validação conforme o desafio
+    // Validação do desafio
     if (email.includes('@') && senha.length > 6) {
       console.log("✅ Acesso autorizado para:", email);
       
-      // NAVEGAÇÃO REAL: Vai para a aba "Explorar" dentro do grupo (tabs)
+      // Navega para as abas
       router.replace('/(tabs)/explore'); 
     } else {
       console.log("❌ Falha no login: E-mail inválido ou senha muito curta.");
@@ -27,17 +27,15 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.content}>
 
-        {/* 1. logo */}
-        <Image
-          source={require('../assets/images/logo.png')} 
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        {/* 1. Logo com tratamento de fallback */}
+        <View style={styles.logoContainer}>
+          <Text style={{ fontSize: 40 }}>🌍</Text>
+        </View>
 
         <Text style={styles.title}>ONG CONNECT</Text>
         <Text style={styles.slogan}>Por um planeta habitável!</Text>
 
-        {/* 2.form*/}
+        {/* 2. Formulário */}
         <TextInput
           style={styles.input}
           placeholder="Digite seu e-mail"
@@ -57,7 +55,7 @@ export default function App() {
           secureTextEntry={true}
         />
 
-        {/* persistencia */}
+        {/* Persistência / Feedback */}
         <Text style={styles.helperText}>
           Logando como: {email || "..."}
         </Text>
@@ -72,7 +70,7 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.secondaryButton}
-          onPress={() => console.log('Botão Criar Conta pressionado!')}
+          onPress={() => Alert.alert("Criar Conta", "Funcionalidade em desenvolvimento!")}
         >
           <Text style={styles.secondaryButtonText}>CRIAR CONTA</Text>
         </TouchableOpacity>
@@ -85,7 +83,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#74c4feff', 
+    backgroundColor: '#74c4fe', 
   },
   content: {
     flex: 1,
@@ -93,14 +91,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  logo: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
+  logoContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     marginBottom: 15,
     borderWidth: 3,
     borderColor: '#FFFFFF',
     backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 28,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: '#25221fff',
+    color: '#25221f',
     fontSize: 18,
     fontWeight: 'bold',
   },
